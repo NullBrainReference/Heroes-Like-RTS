@@ -5,12 +5,14 @@ public class UnitDetector : MonoBehaviour
     [SerializeField]
     private UnitController _controller;
 
+
+    //TODO: Redo - detecting with UnitManager
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("UnitTrigger Entered");
 
-        if (_controller.Target != null)
-            return;
+        //if (_controller.Target != null)
+        //    return;
         if (collision.isTrigger)
             return;
 
@@ -22,7 +24,13 @@ public class UnitDetector : MonoBehaviour
 
         if (unitController.Unit.IsEnemy(_controller.Unit))
         {
-            _controller.Target = unitController;
+            if (unitController.Unit.IsDead)
+                return;
+
+            if (_controller.Target == null)
+                _controller.Target = unitController;
+
+            _controller.Targets.Add(unitController);
         }
     }
 }

@@ -59,8 +59,10 @@ public class UnitDamager : MonoBehaviour
     {
         if (!_ready)
             return;
+        if (_unit.IsDead)
+            return;
 
-        _unit.TakeDamage(unit);
+        unit.TakeDamage(_unit);
 
         _ready = false;
         StartCoroutine(ReloadCoroutine());
