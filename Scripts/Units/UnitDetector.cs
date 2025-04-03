@@ -30,7 +30,7 @@ public class UnitDetector : MonoBehaviour
             if (_controller.Target == null)
                 _controller.Target = unitController;
 
-            _controller.Targets.Add(unitController);
+            //_controller.Targets.Add(unitController);
         }
     }
 }

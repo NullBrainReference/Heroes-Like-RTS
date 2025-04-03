@@ -3,22 +3,24 @@ using System.Collections;
 
 public class UnitDamager : MonoBehaviour
 {
-    private Unit _unit;
+    protected Unit _unit;
 
     [SerializeField]
-    private UnitController _controller;
+    protected UnitController _controller;
     [SerializeField]
     private UnitController _target;
 
     [SerializeField]
     private bool _ready = true;
 
+    protected bool Ready { get => _ready; set => _ready = value; }
+
     private void Awake()
     {
         _unit = _controller.Unit;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.isTrigger)
             return;
@@ -37,7 +39,7 @@ public class UnitDamager : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    protected virtual void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.isTrigger)
             return;
@@ -55,7 +57,7 @@ public class UnitDamager : MonoBehaviour
         }
     }
 
-    private void Hit(Unit unit)
+    protected virtual void Hit(Unit unit)
     {
         if (!_ready)
             return;
@@ -68,7 +70,7 @@ public class UnitDamager : MonoBehaviour
         StartCoroutine(ReloadCoroutine());
     }
     
-    private IEnumerator ReloadCoroutine()
+    protected IEnumerator ReloadCoroutine()
     {
         yield return new WaitForSeconds(1.5f);
 

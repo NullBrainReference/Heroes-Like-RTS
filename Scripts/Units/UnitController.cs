@@ -2,21 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Zenject;
 
 public class UnitController : MonoBehaviour
 {
     [SerializeField] private Unit _unit;
     [SerializeField] private UnitNavigator _navigator;
 
+    [Inject]
+    private UnitManager _manager;
+
     [SerializeField] 
     private UnitController _target;
-    private List<UnitController> _targets; //TODO: Redo - target picking should be done with _unitManager
+    //private List<UnitController> _targets; //TODO: Redo - target picking should be done with _unitManager
 
     private bool _inAttackRange = false;
 
     public Unit Unit => _unit;
     public UnitController Target { get => _target; set => _target = value; }
-    public List<UnitController> Targets => _targets;
+    //public List<UnitController> Targets => _targets;
 
     public bool InAttackRange { 
         get 
@@ -33,9 +37,20 @@ public class UnitController : MonoBehaviour
 
     private void Awake()
     {
-        _targets = new List<UnitController>();
-
+        //_targets = new List<UnitController>();
+        StartCoroutine(WaitForManager());
         StartCoroutine(ChaseTarget());
+    }
+
+    private IEnumerator WaitForManager()
+    {
+        yield return new WaitUntil(() => _manager.Ready);
+
+        _manager.AddUnit(this);
+
+        yield return new WaitForSeconds(1); //TODO remove after spawn behaviour added
+
+        _target = _manager.GetClosestTarget(this);
     }
 
     private IEnumerator ChaseTarget()
@@ -50,6 +65,8 @@ public class UnitController : MonoBehaviour
 
             if (Target.Unit.IsDead)
                 SwithTarget();
+            if (Target == null)
+                yield break;
 
             if (InAttackRange)
                 continue;
@@ -66,13 +83,15 @@ public class UnitController : MonoBehaviour
     {
         InAttackRange = false;
 
-        Targets.RemoveAll(x => x.Unit.IsDead);
+        _target = _manager.GetClosestTarget(this);
 
-        var nearestObject = Targets
-            .OrderBy(x => Vector3.Distance(transform.position, x.transform.position))
-            .FirstOrDefault();
+        //Targets.RemoveAll(x => x.Unit.IsDead);
 
-        if (nearestObject != null)
-            _target = nearestObject;
+        //var nearestObject = Targets
+        //    .OrderBy(x => Vector3.Distance(transform.position, x.transform.position))
+        //    .FirstOrDefault();
+        //
+        //if (nearestObject != null)
+        //    _target = nearestObject;
     }
 }

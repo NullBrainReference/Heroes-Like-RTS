@@ -24,4 +24,9 @@ public class Unit
     {
         _health -= unit.Damage;
     }
+
+    public void TakeDamage(float damage)
+    {
+        _health -= damage;
+    }
 }

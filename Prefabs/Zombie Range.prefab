@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 8219972814054501867}
   - component: {fileID: 6333423561843764086}
   m_Layer: 0
-  m_Name: Zombie
+  m_Name: Zombie Range
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -246,7 +246,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.3
-  m_Speed: 1.25
+  m_Speed: 0
   m_Acceleration: 3
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -391,8 +391,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1883386318657189880}
-  - component: {fileID: 1564314800421514210}
   - component: {fileID: 4576715125485218016}
+  - component: {fileID: 3374224897665642695}
   m_Layer: 0
   m_Name: Damager
   m_TagString: Untagged
@@ -415,21 +415,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2472711507993909863}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1564314800421514210
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8106295425892961796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9843aec9c84dc547937691350002ad2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _controller: {fileID: 766528241572103892}
-  _target: {fileID: 0}
-  _ready: 1
 --- !u!61 &4576715125485218016
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -476,3 +461,19 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.23, y: 1.45}
   m_EdgeRadius: 0
+--- !u!114 &3374224897665642695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8106295425892961796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96d08d32720140b4b8cc996ca0466fd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _controller: {fileID: 766528241572103892}
+  _target: {fileID: 0}
+  _ready: 1
+  _bullet: {fileID: -731528395608537216, guid: fd437f7c18bf5c14ebebd0e391a8426c, type: 3}
