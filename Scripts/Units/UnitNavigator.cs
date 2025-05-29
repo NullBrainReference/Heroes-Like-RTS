@@ -10,6 +10,8 @@ public class UnitNavigator : MonoBehaviour
     {
         _agent.updateRotation = false;
         _agent.updateUpAxis = false;
+
+        _agent.updatePosition = true;
     }
 
     public void MoveToTarget(Vector3 pos)

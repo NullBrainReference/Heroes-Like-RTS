@@ -1,0 +1,45 @@
+{
+    "name": "MapActions",
+    "maps": [
+        {
+            "name": "Clicks",
+            "id": "c944e23d-5c7b-49da-8c14-592a85fd909c",
+            "actions": [
+                {
+                    "name": "ClickRight",
+                    "type": "Button",
+                    "id": "ade4f1fb-7a0c-4fe1-83a9-e5cb91bec46a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "fdb941d8-1a6d-41fe-aaae-abbfd5566edb",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ClickRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "314e636b-6852-4ca3-83d6-c533870126c4",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ClickRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
