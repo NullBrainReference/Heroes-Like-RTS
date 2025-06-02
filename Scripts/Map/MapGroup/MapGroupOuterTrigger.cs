@@ -7,7 +7,7 @@ public class MapGroupOuterTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        var collisionObject = collision.gameObject.GetComponent<IMapCollisionObject>();
+        var collisionObject = collision.gameObject.GetComponent<IMapCollisionObject<MapGroupController>>();
 
         if (collisionObject == null)
         {
@@ -15,7 +15,9 @@ public class MapGroupOuterTrigger : MonoBehaviour
             return;
         }
 
-        SceneLoadUtil.LoadBattleSync(_controller.MapGroup, new MapGroup()); //TODO: make real one
-        Debug.Log("passed scene load");
+        _controller.OnCollision(collisionObject);
+
+        //SceneLoadUtil.LoadBattleSync(_controller.MapGroup, collisionObject.Payload.MapGroup); //TODO: make real one
+        //Debug.Log("passed scene load");
     }
 }

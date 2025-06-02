@@ -14,7 +14,7 @@ public class HeroesHTTPClient : MonoBehaviour
         public string token_type;
     }
 
-    private const string URL = @"http://localhost:8000";
+    private const string URL = @"http://localhost:8000/api";
 
     [SerializeField]
     private string _playerName;

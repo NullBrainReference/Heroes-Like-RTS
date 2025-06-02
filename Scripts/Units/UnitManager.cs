@@ -5,24 +5,24 @@ using System.Linq;
 
 public class UnitManager : MonoBehaviour
 {
-    private Dictionary<string, List<UnitController>> units;
+    private Dictionary<string, List<UnitController>> _units;
 
     public bool Ready { get; private set; }
 
     private void Awake()
     {
-        units = new Dictionary<string, List<UnitController>>();
+        _units = new Dictionary<string, List<UnitController>>();
         Ready = true;
     }
 
     public void AddUnit(UnitController controller)
     {
-        if (!units.ContainsKey(controller.Unit.TeamKey))
+        if (!_units.ContainsKey(controller.Unit.TeamKey))
         {
-            units.Add(controller.Unit.TeamKey, new List<UnitController>());
+            _units.Add(controller.Unit.TeamKey, new List<UnitController>());
         }
 
-        units[controller.Unit.TeamKey].Add(controller);
+        _units[controller.Unit.TeamKey].Add(controller);
     }
 
     public UnitController GetClosestTarget(UnitController controller)
@@ -30,7 +30,7 @@ public class UnitManager : MonoBehaviour
         UnitController result = null;
         float closestDistance = float.MaxValue;
 
-        foreach (var item in units)
+        foreach (var item in _units)
         {
             if (item.Key == controller.Unit.TeamKey)
                 continue;

@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public class MapGroupController : MonoBehaviour, IMapSelectable, IMapCollisionObject
+public class MapGroupController : MonoBehaviour, IMapSelectable, IMapCollisionObject<MapGroupController>
 {
     [SerializeField]
     private MapGroup _mapGroup;
@@ -15,6 +15,8 @@ public class MapGroupController : MonoBehaviour, IMapSelectable, IMapCollisionOb
     public MapGroup MapGroup => _mapGroup;
 
     public Vector3 Position { get => transform.position; }
+
+    public MapGroupController Payload => this;
 
     private void OnMouseUp()
     {
@@ -40,6 +42,9 @@ public class MapGroupController : MonoBehaviour, IMapSelectable, IMapCollisionOb
 
     public void OnCollision(IMapCollisionObject collisionObject)
     {
-        throw new System.NotImplementedException();
+        if (collisionObject is IMapCollisionObject<MapGroupController> groupObject)
+        {
+            SceneLoadUtil.LoadBattleSync(_mapGroup, groupObject.Payload.MapGroup);
+        }
     }
 }
