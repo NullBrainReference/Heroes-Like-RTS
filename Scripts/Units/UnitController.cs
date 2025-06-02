@@ -42,6 +42,11 @@ public class UnitController : MonoBehaviour
         StartCoroutine(ChaseTarget());
     }
 
+    public void SetUnit(Unit unit)
+    {
+        _unit = unit;
+    }
+
     private IEnumerator WaitForManager()
     {
         yield return new WaitUntil(() => _manager.Ready);

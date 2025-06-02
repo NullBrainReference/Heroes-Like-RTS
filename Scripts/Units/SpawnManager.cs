@@ -53,7 +53,7 @@ public class SpawnManager : MonoBehaviour
             {
                 if (spawner.Ready)
                 {
-                    spawner.Spawn(unitPrefab);
+                    spawner.Spawn(unitPrefab, unitsToSpawn[0]);
                     unitsToSpawn.Remove(unitsToSpawn[0]);
                     break;
                 }

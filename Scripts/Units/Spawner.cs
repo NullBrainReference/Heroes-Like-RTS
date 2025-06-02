@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using Zenject;
 
 public class Spawner : MonoBehaviour
@@ -10,20 +11,31 @@ public class Spawner : MonoBehaviour
 
     public bool Ready => _ready;
 
-    private void OnCollisionExit2D(Collision2D collision)
+    //private void OnCollisionExit2D(Collision2D collision)
+    //{
+    //    var controller = collision.gameObject.GetComponent<UnitController>();
+    //
+    //    if (controller == null)
+    //        return;
+    //
+    //    _ready = true;
+    //}
+
+    public void Spawn(UnitController unitPrefab, Unit unit)
     {
-        var controller = collision.gameObject.GetComponent<UnitController>();
+        var unitController = _diContainer.InstantiatePrefabForComponent<UnitController>(unitPrefab, transform);
 
-        if (controller == null)
-            return;
-
-        _ready = true;
-    }
-
-    public void Spawn(UnitController unitPrefab)
-    {
-        _diContainer.InstantiatePrefab(unitPrefab, this.transform);
+        unitController.SetUnit(unit);
 
         _ready = false;
+
+        StartCoroutine(RefreshCoroutine());
+    }
+
+    private IEnumerator RefreshCoroutine()
+    {
+        yield return new WaitForSeconds(1);
+
+        _ready = true;
     }
 }
