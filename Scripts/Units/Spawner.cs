@@ -21,11 +21,12 @@ public class Spawner : MonoBehaviour
     //    _ready = true;
     //}
 
-    public void Spawn(UnitController unitPrefab, Unit unit)
+    public void Spawn(UnitController unitPrefab, Unit unit, Color color)
     {
         var unitController = _diContainer.InstantiatePrefabForComponent<UnitController>(unitPrefab, transform);
 
         unitController.SetUnit(unit);
+        unitController.View.SetColor(color);
 
         _ready = false;
 
@@ -34,7 +35,7 @@ public class Spawner : MonoBehaviour
 
     private IEnumerator RefreshCoroutine()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1.5f);
 
         _ready = true;
     }

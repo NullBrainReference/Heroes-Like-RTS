@@ -1281,6 +1281,8 @@ MonoBehaviour:
   - {fileID: 2011137164}
   _spawnsBottom: []
   _spawnsTop: []
+  _colorLeft: {r: 0.5613208, g: 0.99637556, b: 1, a: 1}
+  _colorRight: {r: 1, g: 0.3820755, b: 0.3820755, a: 1}
   _unitsLib: {fileID: 11400000, guid: 0cb4e1794e0cb134b88654b249b6ff25, type: 2}
 --- !u!1 &1631401304
 GameObject:

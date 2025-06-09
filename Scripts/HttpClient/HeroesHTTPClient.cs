@@ -3,6 +3,7 @@ using System.Text;
 using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.Networking;
+using Zenject;
 using static System.Net.WebRequestMethods;
 
 public class HeroesHTTPClient : MonoBehaviour
@@ -20,9 +21,15 @@ public class HeroesHTTPClient : MonoBehaviour
     private string _playerName;
     [SerializeField]
     private GameSave _gameSave;
+    [Inject]
+    private MapObjectsCollector _mapObjectsCollector;
 
     public void TrySave()
     {
+        _gameSave = new GameSave(
+            _mapObjectsCollector.GetGroups(), 
+            _mapObjectsCollector.GetTowns());
+
         StartCoroutine(SaveCoroutine());
     }
 
@@ -33,7 +40,10 @@ public class HeroesHTTPClient : MonoBehaviour
 
     private IEnumerator SaveCoroutine()
     {
-        string jsonData = JsonUtility.ToJson(new GameSavePayload(_playerName, _gameSave));
+        //string jsonData = JsonUtility.ToJson(new GameSavePayload(_playerName, _gameSave));
+
+        string saveJson = JsonUtility.ToJson(_gameSave);
+        string jsonData = JsonUtility.ToJson(new GameSavePayload(_playerName, saveJson));
 
         Debug.Log($"{URL}/game-save");
 

@@ -39,4 +39,22 @@ public class Unit
     {
         _health -= damage;
     }
+
+    public void SetTeam(MapGroup group)
+    {
+        _teamKey = group.Key;
+    }
+
+    public static Unit GetUnit(UnitType unitType)
+    {
+        switch (unitType)
+        {
+            case UnitType.Zombie:
+                return new Unit { _damage = 3, _health = 8, _maxHealth = 8, _unitType = UnitType.Zombie };
+            case UnitType.Giant:
+                return new Unit { _damage = 5, _health = 24, _maxHealth = 24, _unitType = UnitType.Giant };
+        }
+
+        return new Unit { _damage = 3, _health = 8, _maxHealth = 8, _unitType = UnitType.Zombie };
+    }
 }

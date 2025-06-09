@@ -8,6 +8,9 @@ public class UnitController : MonoBehaviour
 {
     [SerializeField] private Unit _unit;
     [SerializeField] private UnitNavigator _navigator;
+    [SerializeField] private UnitView _view;
+
+    private Rigidbody2D _rb;
 
     [Inject]
     private UnitManager _manager;
@@ -19,6 +22,7 @@ public class UnitController : MonoBehaviour
     private bool _inAttackRange = false;
 
     public Unit Unit => _unit;
+    public UnitView View => _view;
     public UnitController Target { get => _target; set => _target = value; }
     //public List<UnitController> Targets => _targets;
 
@@ -37,6 +41,8 @@ public class UnitController : MonoBehaviour
 
     private void Awake()
     {
+        _rb = GetComponent<Rigidbody2D>();
+
         //_targets = new List<UnitController>();
         StartCoroutine(WaitForManager());
         StartCoroutine(ChaseTarget());
@@ -82,6 +88,21 @@ public class UnitController : MonoBehaviour
 
         _navigator.Stop();
         gameObject.SetActive(false);
+    }
+
+    private void FixedUpdate()
+    {
+        if (Target == null)
+            return;
+
+        if (transform.position.x - Target.transform.position.x > 0)
+        {
+            View.FlipX(true);
+        }
+        else if (transform.position.x - Target.transform.position.x < 0)
+        {
+            View.FlipX(false);
+        }
     }
 
     private void SwithTarget()
