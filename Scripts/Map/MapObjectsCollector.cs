@@ -8,7 +8,10 @@ public class MapObjectsCollector : MonoBehaviour
     [SerializeField]
     private List<TownController> _townControllers;
 
-
+    public void Subscribe(MapGroupController controller)
+    {
+        _groupControllers.Add(controller);
+    }
 
     public List<MapGroup> GetGroups()
     {
@@ -18,6 +21,8 @@ public class MapObjectsCollector : MonoBehaviour
             if (controller == null)
                 continue;
 
+            var pos = controller.Position;
+            controller.MapGroup.SetPos(pos.x, pos.y);
             groups.Add(controller.MapGroup);
         }
 
@@ -33,5 +38,15 @@ public class MapObjectsCollector : MonoBehaviour
         }
 
         return groups;
+    }
+
+    public void DestroyAllGroups()
+    {
+        foreach (var controller in _groupControllers)
+        {
+            Destroy(controller.gameObject);
+        }
+
+        _groupControllers.Clear();
     }
 }

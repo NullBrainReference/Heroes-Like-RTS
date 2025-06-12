@@ -21,5 +21,10 @@ public class HeroesHTTPClient_Inspector : Editor
         {
             client.TrySave();
         }
+
+        if (GUILayout.Button("Load last"))
+        {
+            client.TryLoad();
+        }
     }
 }

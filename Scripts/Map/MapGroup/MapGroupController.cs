@@ -10,7 +10,9 @@ public class MapGroupController : MonoBehaviour, IMapSelectable, IMapCollisionOb
 
 
     [Inject]
-    MapPlayerController _palyerController;
+    private MapPlayerController _palyerController;
+    [Inject]
+    private MapObjectsCollector _objectsCollector;
 
     public MapGroup MapGroup => _mapGroup;
 
@@ -18,10 +20,20 @@ public class MapGroupController : MonoBehaviour, IMapSelectable, IMapCollisionOb
 
     public MapGroupController Payload => this;
 
+    private void Awake()
+    {
+        _objectsCollector.Subscribe(this);
+    }
+
     private void OnMouseUp()
     {
         Debug.Log("MouseUp detected");
         Select();
+    }
+
+    public void SetMapGroup(MapGroup mapGroup)
+    {
+        _mapGroup = mapGroup;
     }
 
     public void Select()

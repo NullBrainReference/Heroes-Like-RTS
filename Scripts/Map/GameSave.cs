@@ -16,4 +16,7 @@ public class GameSave
         _groups = groups;
         _towns = towns;
     }
+
+    public List<MapGroup> Groups => _groups;
+    public List<Town> Towns => _towns;
 }

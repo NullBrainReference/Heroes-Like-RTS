@@ -23,6 +23,8 @@ public class HeroesHTTPClient : MonoBehaviour
     private GameSave _gameSave;
     [Inject]
     private MapObjectsCollector _mapObjectsCollector;
+    [Inject]
+    private MapController _mapController;
 
     public void TrySave()
     {
@@ -31,6 +33,11 @@ public class HeroesHTTPClient : MonoBehaviour
             _mapObjectsCollector.GetTowns());
 
         StartCoroutine(SaveCoroutine());
+    }
+
+    public void TryLoad()
+    {
+        StartCoroutine(LoadLastCoroutine());
     }
 
     public void TryLogin()
@@ -69,6 +76,31 @@ public class HeroesHTTPClient : MonoBehaviour
         //Debug.Log(request.ToString());
 
         Debug.Log($"json is: {jsonData}");
+    }
+
+    public IEnumerator LoadLastCoroutine()
+    {
+        UnityWebRequest request = UnityWebRequest.Get($"{URL}/gamesave/last");
+        
+        request.SetRequestHeader("Accept", "application/json");
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            string jsonResponse = request.downloadHandler.text;
+            _gameSave = JsonUtility.FromJson<GameSavePayload>(jsonResponse).GetSaveData();
+
+            _mapController.SpawnMapGroups(_gameSave);
+
+            Debug.Log("Game loaded successfully!");
+            Debug.Log($"json response is: {jsonResponse}");
+        }
+        else
+        {
+            Debug.LogError("Error loading game: " + request.error);
+        }
+       
     }
 
     public IEnumerator Login(string email, string password)
