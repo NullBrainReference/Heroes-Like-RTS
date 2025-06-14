@@ -14,6 +14,57 @@ public class MapController : MonoBehaviour
     [Inject]
     private DiContainer _diContainer;
 
+    private void Start()
+    {
+        //For now it will duplicate on 2nd load so
+        //TODO: Avoid duplications (mb unsub? so i'll need type)
+        EventBus.Instance.Subscribe(
+            EventType.Save,
+            new LocalEvent(() => { SaveMap(); }));
+
+        if (PlayerPrefs.GetString("loadmap", "no") == "load")
+        {
+            LoadMap();
+
+            PlayerPrefs.SetString("loadmap", "no");
+        }
+    }
+
+    public void LoadMap()
+    {
+        var save = JsonUtility.FromJson<GameSave>(PlayerPrefs.GetString("localsave"));
+
+        var group1 = JsonUtility.FromJson<MapGroup>(PlayerPrefs.GetString("player1"));
+        var group2 = JsonUtility.FromJson<MapGroup>(PlayerPrefs.GetString("player2"));
+
+        List<MapGroup> toRemove = new List<MapGroup>();
+
+        foreach (var group in save.Groups)
+        {
+            if (group.Key == group1.Key)
+                group.UpdateWithGroup(group1);
+            else if (group.Key == group2.Key)
+                group.UpdateWithGroup(group2);
+            
+            if (group.IsDefeated())
+                toRemove.Add(group);
+        }
+
+        foreach (var group in toRemove)
+            save.Groups.Remove(group);
+
+        SpawnMapGroups(save);
+    }
+
+    public void SaveMap()
+    {
+        var save = new GameSave(
+            _mapObjectsCollector.GetGroups(),
+            _mapObjectsCollector.GetTowns());
+
+        PlayerPrefs.SetString("localsave", JsonUtility.ToJson(save));
+    }
+
     public void SpawnMapGroups(GameSave gameSave)
     {
         StartCoroutine(SpawnMapGroupsCoroutine(gameSave));
@@ -35,7 +86,7 @@ public class MapController : MonoBehaviour
 
         foreach (var g in gameSave.Groups)
         {
-            var prefab = _mapObjectsLib.GetMapGroupPrefab(g.Key == "A" ? TeamTag.White : TeamTag.Red);
+            var prefab = _mapObjectsLib.GetMapGroupPrefab(g.TeamKey == "A" ? TeamTag.White : TeamTag.Red);
             SpawnMapGroup(g, prefab);
         }
     }

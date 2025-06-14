@@ -42,7 +42,7 @@ public class Unit
 
     public void SetTeam(MapGroup group)
     {
-        _teamKey = group.Key;
+        _teamKey = group.TeamKey;
     }
 
     public static Unit GetUnit(UnitType unitType)

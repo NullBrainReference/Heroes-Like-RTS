@@ -37,11 +37,34 @@ public class SpawnManager : MonoBehaviour
         var group1 = JsonUtility.FromJson<MapGroup>(PlayerPrefs.GetString("player1", ""));
         var group2 = JsonUtility.FromJson<MapGroup>(PlayerPrefs.GetString("player2", ""));
 
-        _groups.Add(group1.Key, group1);
-        _groups.Add(group2.Key, group2);
+        _groups.Add(group1.TeamKey, group1);
+        _groups.Add(group2.TeamKey, group2);
 
         StartCoroutine(SpawnCoroutine(group1.Units, _spawnsLeft, _colorLeft));
         StartCoroutine(SpawnCoroutine(group2.Units, _spawnsRight, _colorRight));
+
+        //TODO replace with bus
+        StartCoroutine(ExitOnConditionCoroutine());
+    }
+
+    private IEnumerator ExitOnConditionCoroutine()
+    {
+        while (true)
+        {
+            foreach (var group in _groups)
+            {
+                if (!group.Value.IsDefeated())
+                    continue;
+
+                PlayerPrefs.SetString("player1", JsonUtility.ToJson(_groups["A"]));
+                PlayerPrefs.SetString("player2", JsonUtility.ToJson(_groups["B"]));
+
+                SceneLoadUtil.LoadMapSync(_groups["A"], _groups["B"]);
+            }
+
+
+            yield return new WaitForSeconds(5);
+        }
     }
 
     private IEnumerator SpawnCoroutine(List<Unit> units, List<Spawner> spawnersGroup, Color color)
