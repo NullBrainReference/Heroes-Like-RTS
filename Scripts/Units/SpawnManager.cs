@@ -49,21 +49,26 @@ public class SpawnManager : MonoBehaviour
 
     private IEnumerator ExitOnConditionCoroutine()
     {
-        while (true)
+        bool repeat = true;
+
+        while (repeat)
         {
             foreach (var group in _groups)
             {
                 if (!group.Value.IsDefeated())
                     continue;
 
-                PlayerPrefs.SetString("player1", JsonUtility.ToJson(_groups["A"]));
-                PlayerPrefs.SetString("player2", JsonUtility.ToJson(_groups["B"]));
+                //PlayerPrefs.SetString("player1", JsonUtility.ToJson(_groups["A"]));
+                //PlayerPrefs.SetString("player2", JsonUtility.ToJson(_groups["B"]));
 
                 SceneLoadUtil.LoadMapSync(_groups["A"], _groups["B"]);
+
+                repeat = false;
+                break;
             }
 
-
-            yield return new WaitForSeconds(5);
+            if (repeat)
+                yield return new WaitForSeconds(5);
         }
     }
 

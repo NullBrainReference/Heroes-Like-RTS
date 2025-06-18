@@ -16,6 +16,9 @@ public class SceneLoadUtil
 
     public static void LoadMapSync(MapGroup player1, MapGroup player2)
     {
+        player1.RemoveDead();
+        player2.RemoveDead();
+
         //TODO: replace with better solution
         PlayerPrefs.SetString("player1", JsonUtility.ToJson(player1));
         PlayerPrefs.SetString("player2", JsonUtility.ToJson(player2));

@@ -65,6 +65,7 @@ public class UnitDamager : MonoBehaviour
             return;
 
         unit.TakeDamage(_unit);
+        _target.View.Damage(); //TODO: Replace with UnitEventsController
 
         _ready = false;
         StartCoroutine(ReloadCoroutine());

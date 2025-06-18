@@ -44,6 +44,11 @@ public class MapGroup
         _posY = posY;
     }
 
+    public void RemoveDead()
+    {
+        _units.RemoveAll(x => x.IsDead);
+    }
+
     public void UpdateWithGroup(MapGroup group)
     {
         _units = group._units;
