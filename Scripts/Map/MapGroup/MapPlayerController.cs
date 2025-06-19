@@ -27,7 +27,7 @@ public class MapPlayerController : MonoBehaviour
 
     private void MoveOnClick(InputAction.CallbackContext context)
     {
-        Debug.Log("MovrOnClick entered");
+        Debug.Log("MoveOnClick entered");
         if (_selected == null)
             return;
 
@@ -51,5 +51,10 @@ public class MapPlayerController : MonoBehaviour
             Debug.Log($"hit failed, no pos");
             return _selected.Position;
         }
+    }
+
+    private void OnDestroy()
+    {
+        //MapInputsManager.Instance.UnsubscribeOnMove(MoveOnClick);
     }
 }

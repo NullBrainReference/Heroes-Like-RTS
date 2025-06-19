@@ -8,6 +8,9 @@ public class UnitNavigator : MonoBehaviour
 
     private void Awake()
     {
+        if (_agent == null)
+            _agent = gameObject.GetComponent<NavMeshAgent>();
+
         _agent.updateRotation = false;
         _agent.updateUpAxis = false;
 
@@ -23,5 +26,10 @@ public class UnitNavigator : MonoBehaviour
     public void Stop()
     {
         _agent.isStopped = true;
+    }
+
+    private void OnDestroy()
+    {
+        _agent = null;
     }
 }

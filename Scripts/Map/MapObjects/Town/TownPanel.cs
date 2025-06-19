@@ -8,6 +8,9 @@ public class TownPanel : MonoBehaviour
     private MapGroup _group;
 
     [SerializeField]
+    private TextMeshProUGUI _buildingText;
+
+    [SerializeField]
     private TextMeshProUGUI _unitText;
     [SerializeField]
     private TextMeshProUGUI _countText;
@@ -21,6 +24,7 @@ public class TownPanel : MonoBehaviour
 
         _unitText.text = _town.Buildings[0].UnitType.ToString();
         _countText.text = _town.Buildings[0].UnitsCount.ToString();
+        _buildingText.text = _town.Buildings[0].Name.ToString();
     }
 
     public void Hire()

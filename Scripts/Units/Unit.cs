@@ -14,7 +14,8 @@ public class Unit
     [SerializeField] private float _maxHealth;
     [SerializeField] private float _damage;
 
-    [SerializeField] private string _teamKey;
+    [SerializeField] //TODO: Unserialize
+    private TeamTag _teamKey;
 
     [SerializeField] private UnitType _unitType;
 
@@ -22,7 +23,7 @@ public class Unit
     public float MaxHealth { get => _maxHealth; }
     public float Damage { get => _damage; }
 
-    public string TeamKey { get => _teamKey; }
+    public TeamTag TeamKey { get => _teamKey; }
     public UnitType UnitType => _unitType;
 
     public bool IsDead => _health <= 0;

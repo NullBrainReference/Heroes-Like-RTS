@@ -38,6 +38,7 @@ public class Bullet : MonoBehaviour
     private void HitTarget()
     {
         Target.Unit.TakeDamage(Damage);
+        Target.View.Damage();
         Destroy(gameObject);
     }
 }

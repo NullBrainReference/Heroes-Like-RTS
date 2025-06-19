@@ -3,8 +3,6 @@ using System.Collections;
 
 public class UnitDamager : MonoBehaviour
 {
-    protected Unit _unit;
-
     [SerializeField]
     protected UnitController _controller;
     [SerializeField]
@@ -15,10 +13,12 @@ public class UnitDamager : MonoBehaviour
 
     protected bool Ready { get => _ready; set => _ready = value; }
 
-    private void Awake()
-    {
-        _unit = _controller.Unit;
-    }
+    protected Unit _unit => _controller.Unit;
+
+    //private void Awake()
+    //{
+    //    _unit = _controller.Unit;
+    //}
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
@@ -31,10 +31,20 @@ public class UnitDamager : MonoBehaviour
 
         Debug.Log("UnitTrigger (Damager) Unit detected");
 
+        if (!unitController.Unit.IsEnemy(_unit))
+            return;
+
         if (_controller.Target == unitController)
         {
             _controller.InAttackRange = true;
             _target = unitController;
+            Hit(unitController.Unit);
+        }
+        else if (_target == null)
+        {
+            _controller.InAttackRange = true;
+            _target = unitController;
+            _controller.Target = unitController;
             Hit(unitController.Unit);
         }
     }

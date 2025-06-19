@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 766528241572103892, guid: ae794f7832e25d24580cbb30df655de4, type: 3}
       propertyPath: _unit._teamKey
-      value: A
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 766528241572103892, guid: ae794f7832e25d24580cbb30df655de4, type: 3}
       propertyPath: _unit._maxHealth
@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2472711507993909863, guid: ae794f7832e25d24580cbb30df655de4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.39
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2472711507993909863, guid: ae794f7832e25d24580cbb30df655de4, type: 3}
       propertyPath: m_LocalPosition.y

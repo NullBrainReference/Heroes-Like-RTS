@@ -30,6 +30,8 @@ public class MapInputsManager : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log("InputManager awake");
+
         _inputActions = new MapActions();
         //_inputActions.Enable();
 
@@ -79,5 +81,31 @@ public class MapInputsManager : MonoBehaviour
         _inputActions.Enable();
     }
 
-    
+    public void UnsubscribeOnMove(Action<InputAction.CallbackContext> action)
+    {
+        _inputActions.Disable();
+        _inputActions.Clicks.ClickRight.performed -= action;
+        _inputActions.Enable();
+    }
+
+    public void SubscribeOnMenu(Action<InputAction.CallbackContext> action)
+    {
+        _inputActions.Disable();
+        _inputActions.Controls.Menu.performed += action;
+        _inputActions.Enable();
+    }
+
+    public void UnsubscribeOnMenu(Action<InputAction.CallbackContext> action)
+    {
+        _inputActions.Disable();
+        _inputActions.Controls.Menu.performed -= action;
+        _inputActions.Enable();
+    }
+
+    private void OnDestroy()
+    {
+        _inputActions.Disable();
+        _inputActions.Dispose();
+        _inputActions = null;
+    }
 }

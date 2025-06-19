@@ -5,13 +5,13 @@ using System.Linq;
 
 public class UnitManager : MonoBehaviour
 {
-    private Dictionary<string, List<UnitController>> _units;
+    private Dictionary<TeamTag, List<UnitController>> _units;
 
     public bool Ready { get; private set; }
 
     private void Awake()
     {
-        _units = new Dictionary<string, List<UnitController>>();
+        _units = new Dictionary<TeamTag, List<UnitController>>();
         Ready = true;
     }
 

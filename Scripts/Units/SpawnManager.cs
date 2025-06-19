@@ -18,7 +18,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private Color _colorRight;
 
-    private Dictionary<string, MapGroup> _groups;
+    private Dictionary<TeamTag, MapGroup> _groups;
 
     [SerializeField]
     private UnitsLib _unitsLib;
@@ -27,7 +27,7 @@ public class SpawnManager : MonoBehaviour
 
     private void Start()
     {
-        _groups = new Dictionary<string, MapGroup>();
+        _groups = new Dictionary<TeamTag, MapGroup>();
 
         StartSpawning();
     }
@@ -39,6 +39,11 @@ public class SpawnManager : MonoBehaviour
 
         _groups.Add(group1.TeamKey, group1);
         _groups.Add(group2.TeamKey, group2);
+
+        foreach (var group in _groups.Values)
+        {
+            MapGroupProcessor.InitUnitsTeam(group);
+        }
 
         StartCoroutine(SpawnCoroutine(group1.Units, _spawnsLeft, _colorLeft));
         StartCoroutine(SpawnCoroutine(group2.Units, _spawnsRight, _colorRight));
@@ -61,7 +66,7 @@ public class SpawnManager : MonoBehaviour
                 //PlayerPrefs.SetString("player1", JsonUtility.ToJson(_groups["A"]));
                 //PlayerPrefs.SetString("player2", JsonUtility.ToJson(_groups["B"]));
 
-                SceneLoadUtil.LoadMapSync(_groups["A"], _groups["B"]);
+                SceneLoadUtil.LoadMapSync(_groups[TeamTag.White], _groups[TeamTag.Red]);
 
                 repeat = false;
                 break;

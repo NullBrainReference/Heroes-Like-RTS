@@ -213,6 +213,34 @@ public partial class @MapActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Controls"",
+            ""id"": ""ed680fd0-8225-46b9-b4fe-04074cb218c1"",
+            ""actions"": [
+                {
+                    ""name"": ""Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""e0e2d185-8b7f-45ce-b1dc-91542b289dab"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""14e0d341-ae28-48cd-bd77-dce134968776"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -226,12 +254,16 @@ public partial class @MapActions: IInputActionCollection2, IDisposable
         m_Movement_MoveDown = m_Movement.FindAction("MoveDown", throwIfNotFound: true);
         m_Movement_MoveLeft = m_Movement.FindAction("MoveLeft", throwIfNotFound: true);
         m_Movement_MoveRight = m_Movement.FindAction("MoveRight", throwIfNotFound: true);
+        // Controls
+        m_Controls = asset.FindActionMap("Controls", throwIfNotFound: true);
+        m_Controls_Menu = m_Controls.FindAction("Menu", throwIfNotFound: true);
     }
 
     ~@MapActions()
     {
         UnityEngine.Debug.Assert(!m_Clicks.enabled, "This will cause a leak and performance issues, MapActions.Clicks.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Movement.enabled, "This will cause a leak and performance issues, MapActions.Movement.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Controls.enabled, "This will cause a leak and performance issues, MapActions.Controls.Disable() has not been called.");
     }
 
     /// <summary>
@@ -528,6 +560,102 @@ public partial class @MapActions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="MovementActions" /> instance referencing this action map.
     /// </summary>
     public MovementActions @Movement => new MovementActions(this);
+
+    // Controls
+    private readonly InputActionMap m_Controls;
+    private List<IControlsActions> m_ControlsActionsCallbackInterfaces = new List<IControlsActions>();
+    private readonly InputAction m_Controls_Menu;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "Controls".
+    /// </summary>
+    public struct ControlsActions
+    {
+        private @MapActions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public ControlsActions(@MapActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "Controls/Menu".
+        /// </summary>
+        public InputAction @Menu => m_Wrapper.m_Controls_Menu;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_Controls; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="ControlsActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(ControlsActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="ControlsActions" />
+        public void AddCallbacks(IControlsActions instance)
+        {
+            if (instance == null || m_Wrapper.m_ControlsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ControlsActionsCallbackInterfaces.Add(instance);
+            @Menu.started += instance.OnMenu;
+            @Menu.performed += instance.OnMenu;
+            @Menu.canceled += instance.OnMenu;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="ControlsActions" />
+        private void UnregisterCallbacks(IControlsActions instance)
+        {
+            @Menu.started -= instance.OnMenu;
+            @Menu.performed -= instance.OnMenu;
+            @Menu.canceled -= instance.OnMenu;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="ControlsActions.UnregisterCallbacks(IControlsActions)" />.
+        /// </summary>
+        /// <seealso cref="ControlsActions.UnregisterCallbacks(IControlsActions)" />
+        public void RemoveCallbacks(IControlsActions instance)
+        {
+            if (m_Wrapper.m_ControlsActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="ControlsActions.AddCallbacks(IControlsActions)" />
+        /// <seealso cref="ControlsActions.RemoveCallbacks(IControlsActions)" />
+        /// <seealso cref="ControlsActions.UnregisterCallbacks(IControlsActions)" />
+        public void SetCallbacks(IControlsActions instance)
+        {
+            foreach (var item in m_Wrapper.m_ControlsActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_ControlsActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="ControlsActions" /> instance referencing this action map.
+    /// </summary>
+    public ControlsActions @Controls => new ControlsActions(this);
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Clicks" which allows adding and removing callbacks.
     /// </summary>
@@ -578,5 +706,20 @@ public partial class @MapActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMoveRight(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Controls" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="ControlsActions.AddCallbacks(IControlsActions)" />
+    /// <seealso cref="ControlsActions.RemoveCallbacks(IControlsActions)" />
+    public interface IControlsActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "Menu" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMenu(InputAction.CallbackContext context);
     }
 }

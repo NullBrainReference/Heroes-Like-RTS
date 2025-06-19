@@ -86,7 +86,7 @@ public class MapController : MonoBehaviour
 
         foreach (var g in gameSave.Groups)
         {
-            var prefab = _mapObjectsLib.GetMapGroupPrefab(g.TeamKey == "A" ? TeamTag.White : TeamTag.Red);
+            var prefab = _mapObjectsLib.GetMapGroupPrefab(g.TeamKey);
             SpawnMapGroup(g, prefab);
         }
     }

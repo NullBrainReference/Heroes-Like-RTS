@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using Zenject;
 using static System.Net.WebRequestMethods;
+using TMPro;
 
 public class HeroesHTTPClient : MonoBehaviour
 {
@@ -26,6 +27,11 @@ public class HeroesHTTPClient : MonoBehaviour
     [Inject]
     private MapController _mapController;
 
+    [SerializeField]
+    private TMP_InputField _emailInput;
+    [SerializeField]
+    private TMP_InputField _passwordInput;
+
     public void TrySave()
     {
         _gameSave = new GameSave(
@@ -42,7 +48,8 @@ public class HeroesHTTPClient : MonoBehaviour
 
     public void TryLogin()
     {
-        StartCoroutine(Login("che@gmail.com", "password123"));
+        //StartCoroutine(Login("che@gmail.com", "password123"));
+        StartCoroutine(Login(_emailInput.text, _passwordInput.text));
     }
 
     private IEnumerator SaveCoroutine()
@@ -61,6 +68,16 @@ public class HeroesHTTPClient : MonoBehaviour
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Accept", "application/json");
         request.SetRequestHeader("Content-Type", "application/json");
+
+        string token = PlayerPrefs.GetString("AuthToken", "");
+        if (!string.IsNullOrEmpty(token))
+        {
+            request.SetRequestHeader("Authorization", $"Bearer {token}");
+        }
+        else
+        {
+            Debug.LogWarning("Auth token not found. Save request may be rejected.");
+        }
 
         yield return request.SendWebRequest();
 
@@ -83,6 +100,16 @@ public class HeroesHTTPClient : MonoBehaviour
         UnityWebRequest request = UnityWebRequest.Get($"{URL}/gamesave/last");
         
         request.SetRequestHeader("Accept", "application/json");
+
+        string token = PlayerPrefs.GetString("AuthToken", "");
+        if (!string.IsNullOrEmpty(token))
+        {
+            request.SetRequestHeader("Authorization", $"Bearer {token}");
+        }
+        else
+        {
+            Debug.LogWarning("Auth token not found. Save request may be rejected.");
+        }
 
         yield return request.SendWebRequest();
 
