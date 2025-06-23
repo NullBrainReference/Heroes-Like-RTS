@@ -14,6 +14,16 @@ public class HeroesHTTPClient : MonoBehaviour
     {
         public string access_token;
         public string token_type;
+        public string name;
+    }
+
+    [System.Serializable]
+    private class RegisterPayload
+    {
+        public string name;
+        public string email;
+        public string password;
+        public string password_confirmation;
     }
 
     private const string URL = @"http://localhost:8000/api";
@@ -31,6 +41,37 @@ public class HeroesHTTPClient : MonoBehaviour
     private TMP_InputField _emailInput;
     [SerializeField]
     private TMP_InputField _passwordInput;
+    [SerializeField]
+    private TMP_InputField _nameInput;
+
+    [SerializeField]
+    private TextMeshProUGUI _playerNameText;
+
+    [SerializeField] private GameObject _nameInputGroup;
+    [SerializeField] private GameObject _loginButton;
+    [SerializeField] private GameObject _registerButton;
+    [SerializeField] private GameObject _switchLoginButton;
+    [SerializeField] private GameObject _switchRegisterButton;
+
+    public void SwitchLogin()
+    {
+        _nameInputGroup.SetActive(false);
+        _registerButton.SetActive(false);
+        _loginButton.SetActive(true);
+
+        _switchLoginButton.SetActive(false);
+        _switchRegisterButton.SetActive(true);
+    }
+
+    public void SwitchRegister()
+    {
+        _nameInputGroup.SetActive(true);
+        _registerButton.SetActive(true);
+        _loginButton.SetActive(false);
+
+        _switchLoginButton.SetActive(true);
+        _switchRegisterButton.SetActive(false);
+    }
 
     public void TrySave()
     {
@@ -52,12 +93,24 @@ public class HeroesHTTPClient : MonoBehaviour
         StartCoroutine(Login(_emailInput.text, _passwordInput.text));
     }
 
+    public void TryRegister()
+    {
+        //StartCoroutine(Login("che@gmail.com", "password123"));
+        StartCoroutine(
+            Register(
+                _nameInput.text, 
+                _emailInput.text, 
+                _passwordInput.text, 
+                _passwordInput.text)
+            );
+    }
+
     private IEnumerator SaveCoroutine()
     {
         //string jsonData = JsonUtility.ToJson(new GameSavePayload(_playerName, _gameSave));
 
         string saveJson = JsonUtility.ToJson(_gameSave);
-        string jsonData = JsonUtility.ToJson(new GameSavePayload(_playerName, saveJson));
+        string jsonData = JsonUtility.ToJson(new GameSavePayload(_playerNameText.text, saveJson));
 
         Debug.Log($"{URL}/game-save");
 
@@ -157,10 +210,52 @@ public class HeroesHTTPClient : MonoBehaviour
 
             // Store token for future API requests
             PlayerPrefs.SetString("AuthToken", authData.access_token);
+            _playerNameText.text = authData.name;
         }
         else
         {
             Debug.LogError($"Login failed: {request.error}");
         }
     }
+
+    public IEnumerator Register(string name, string email, string password, string passwordConfirmation)
+    {
+        var payload = new RegisterPayload
+        {
+            name = name,
+            email = email,
+            password = password,
+            password_confirmation = passwordConfirmation
+        };
+
+        string jsonData = JsonUtility.ToJson(payload);
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
+
+        UnityWebRequest request = new UnityWebRequest($"{URL}/register", "POST");
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Accept", "application/json");
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            Debug.Log("Registration successful!");
+
+            string jsonResponse = request.downloadHandler.text;
+            AuthResponse authData = JsonUtility.FromJson<AuthResponse>(jsonResponse);
+
+            PlayerPrefs.SetString("AuthToken", authData.access_token);
+            Debug.Log($"Registered and saved token: {authData.access_token}");
+
+            _playerNameText.text = payload.name;
+        }
+        else
+        {
+            Debug.LogError("Registration failed: " + request.error);
+            Debug.Log($"Response: {request.downloadHandler.text}");
+        }
+    }
+
 }
