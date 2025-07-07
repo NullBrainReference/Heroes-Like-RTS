@@ -10,6 +10,8 @@ public class MapController : MonoBehaviour
     private MapObjectsCollector _mapObjectsCollector;
     [Inject]
     private MapObjectsLib _mapObjectsLib;
+    [Inject]
+    private TimeManager _timeManager;
 
     [Inject]
     private DiContainer _diContainer;
@@ -60,7 +62,8 @@ public class MapController : MonoBehaviour
     {
         var save = new GameSave(
             _mapObjectsCollector.GetGroups(),
-            _mapObjectsCollector.GetTowns());
+            _mapObjectsCollector.GetTowns(),
+            _timeManager.TimeModel);
 
         PlayerPrefs.SetString("localsave", JsonUtility.ToJson(save));
     }

@@ -36,6 +36,8 @@ public class HeroesHTTPClient : MonoBehaviour
     private MapObjectsCollector _mapObjectsCollector;
     [Inject]
     private MapController _mapController;
+    [Inject]
+    private TimeManager _timeManager;
 
     [SerializeField]
     private TMP_InputField _emailInput;
@@ -77,7 +79,8 @@ public class HeroesHTTPClient : MonoBehaviour
     {
         _gameSave = new GameSave(
             _mapObjectsCollector.GetGroups(), 
-            _mapObjectsCollector.GetTowns());
+            _mapObjectsCollector.GetTowns(),
+            _timeManager.TimeModel);
 
         StartCoroutine(SaveCoroutine());
     }
@@ -172,6 +175,7 @@ public class HeroesHTTPClient : MonoBehaviour
             _gameSave = JsonUtility.FromJson<GameSavePayload>(jsonResponse).GetSaveData();
 
             _mapController.SpawnMapGroups(_gameSave);
+            _timeManager.TimeModel = _gameSave.Time;
 
             Debug.Log("Game loaded successfully!");
             Debug.Log($"json response is: {jsonResponse}");
