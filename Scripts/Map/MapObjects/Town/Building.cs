@@ -30,4 +30,9 @@ public class Building
 
         _unitsCount--;
     }
+
+    public void Grow()
+    {
+        _unitsCount += _unitsGrow;
+    }
 }

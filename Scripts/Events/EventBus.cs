@@ -6,7 +6,8 @@ using UnityEngine;
 public enum EventType
 {
     Save,
-    Load
+    Load,
+    NewDay
 }
 
 public class EventBus : MonoBehaviour
@@ -27,6 +28,7 @@ public class EventBus : MonoBehaviour
 
         events.Add(EventType.Save.ToString(), new List<ILocalEvent>());
         events.Add(EventType.Load.ToString(), new List<ILocalEvent>());
+        events.Add(EventType.NewDay.ToString(), new List<ILocalEvent>());
     }
 
     public void Subscribe(EventType eventType, ILocalEvent localEvent)

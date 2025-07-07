@@ -13,6 +13,12 @@ public class TownController : MonoBehaviour, IMapCollisionObject<TownController>
 
     public TownController Payload => this;
 
+    private void Start()
+    {
+        EventBus.Instance.Subscribe(EventType.NewDay,
+            new LocalEvent(() => { Town.Grow(); }));
+    }
+
     public void OnCollision(IMapCollisionObject collisionObject)
     {
         if (collisionObject is IMapCollisionObject<MapGroupController> groupObject)

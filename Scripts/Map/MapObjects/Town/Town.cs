@@ -8,4 +8,12 @@ public class Town
     private List<Building> _buildings;
 
     public List<Building> Buildings => _buildings;
+
+    public void Grow()
+    {
+        foreach (var building in _buildings)
+        {
+            building.Grow();
+        }
+    }
 }

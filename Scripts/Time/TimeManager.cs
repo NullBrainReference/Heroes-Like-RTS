@@ -37,6 +37,9 @@ public class TimeManager : MonoBehaviour
             _time.DayProgress = 0;
             _time.Day++;
 
+            if (_time.Day % 7 == 0)
+                EventBus.Instance.Invoke(EventType.NewDay);
+
             DayUpdate();
         }
 
