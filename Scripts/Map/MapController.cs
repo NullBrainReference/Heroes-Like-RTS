@@ -55,7 +55,9 @@ public class MapController : MonoBehaviour
         foreach (var group in toRemove)
             save.Groups.Remove(group);
 
+        RestoreTowns(save);
         SpawnMapGroups(save);
+        _timeManager.TimeModel = save.Time;
     }
 
     public void SaveMap()
@@ -68,24 +70,36 @@ public class MapController : MonoBehaviour
         PlayerPrefs.SetString("localsave", JsonUtility.ToJson(save));
     }
 
+    public void RestoreTowns(GameSave save)
+    {
+        StartCoroutine(RestoreTownsCoroutine(save));
+    }
+
     public void SpawnMapGroups(GameSave gameSave)
     {
         StartCoroutine(SpawnMapGroupsCoroutine(gameSave));
+    }
 
-        //_mapObjectsCollector.DestroyAllGroups();
-        //
-        //foreach (var g in gameSave.Groups)
-        //{
-        //    var prefab = _mapObjectsLib.GetMapGroupPrefab(g.Key == "A" ? TeamTag.White : TeamTag.Red);
-        //    SpawnMapGroup(g, prefab);
-        //}
+    private IEnumerator RestoreTownsCoroutine(GameSave save)
+    {
+        yield return new WaitUntil(
+            () => _mapObjectsCollector.TownControllers.Count != save.Towns.Count);
+
+        foreach (var town in save.Towns)
+        {
+            _mapObjectsCollector.RestoreModel(town);
+        }
     }
 
     private IEnumerator SpawnMapGroupsCoroutine(GameSave gameSave)
     {
-        _mapObjectsCollector.DestroyAllGroups();
+        yield return new WaitUntil(
+            () => _mapObjectsCollector.GroupControllers.Count != gameSave.Groups.Count);
 
-        yield return new WaitForSeconds(3);
+        _mapObjectsCollector.DestroyAllGroups();
+        EventBus.Instance.Invoke(EventType.Load);
+
+        yield return new WaitForSeconds(2);
 
         foreach (var g in gameSave.Groups)
         {

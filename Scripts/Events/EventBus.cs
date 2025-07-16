@@ -12,43 +12,43 @@ public enum EventType
 
 public class EventBus : MonoBehaviour
 {
-    private Dictionary<string, List<ILocalEvent>> events; 
+    private Dictionary<string, List<ILocalEvent>> _events; 
 
     public static EventBus Instance { get; private set; }
 
     private void Awake()
     {
-        if (Instance == null)
-        {
+        //if (Instance == null)
+        //{
             Instance = this;
-            DontDestroyOnLoad(this);
-        }
+            //DontDestroyOnLoad(this);
+        //}
 
-        events = new Dictionary<string, List<ILocalEvent>>();
+        _events = new Dictionary<string, List<ILocalEvent>>();
 
-        events.Add(EventType.Save.ToString(), new List<ILocalEvent>());
-        events.Add(EventType.Load.ToString(), new List<ILocalEvent>());
-        events.Add(EventType.NewDay.ToString(), new List<ILocalEvent>());
+        _events.Add(EventType.Save.ToString(), new List<ILocalEvent>());
+        _events.Add(EventType.Load.ToString(), new List<ILocalEvent>());
+        _events.Add(EventType.NewDay.ToString(), new List<ILocalEvent>());
     }
 
     public void Subscribe(EventType eventType, ILocalEvent localEvent)
     {
-        events[eventType.ToString()].Add(localEvent);
+        _events[eventType.ToString()].Add(localEvent);
     }
 
     public void Subscribe(Type type, ILocalEvent localEvent)
     {
-        if (events.ContainsKey(type.ToString()) == false)
+        if (_events.ContainsKey(type.ToString()) == false)
         {
-            events.Add(type.ToString(), new List<ILocalEvent>());
+            _events.Add(type.ToString(), new List<ILocalEvent>());
         }
 
-        events[type.ToString()].Add(localEvent);
+        _events[type.ToString()].Add(localEvent);
     }
 
     public void Invoke(EventType eventType)
     {
-        foreach (var e in events[eventType.ToString()])
+        foreach (var e in _events[eventType.ToString()])
         {
             e.Invoke();
         }
@@ -58,7 +58,7 @@ public class EventBus : MonoBehaviour
     {
         var tmp = new List<ILocalEvent>();
 
-        foreach (var e in events[type.ToString()]) 
+        foreach (var e in _events[type.ToString()]) 
             tmp.Add(e);
 
         foreach (var e in tmp) //events[type.ToString()]
@@ -67,6 +67,6 @@ public class EventBus : MonoBehaviour
 
     public void Unsub(Type type, ILocalEvent localEvent)
     {
-        events[type.ToString()].Remove(localEvent);
+        _events[type.ToString()].Remove(localEvent);
     }
 }

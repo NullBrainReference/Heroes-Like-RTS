@@ -175,6 +175,7 @@ public class HeroesHTTPClient : MonoBehaviour
             _gameSave = JsonUtility.FromJson<GameSavePayload>(jsonResponse).GetSaveData();
 
             _mapController.SpawnMapGroups(_gameSave);
+            _mapController.RestoreTowns(_gameSave);
             _timeManager.TimeModel = _gameSave.Time;
 
             Debug.Log("Game loaded successfully!");

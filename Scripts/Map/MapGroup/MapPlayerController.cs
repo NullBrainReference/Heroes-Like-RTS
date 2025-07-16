@@ -11,6 +11,11 @@ public class MapPlayerController : MonoBehaviour
     [SerializeField]
     private IMapSelectable _selected;
 
+    [SerializeField]
+    private TeamTag _teamKey;
+
+    public TeamTag TeamKey => _teamKey;
+
     //[SerializeField]
     //private Camera _camera;
 
@@ -21,6 +26,12 @@ public class MapPlayerController : MonoBehaviour
 
     public void Select(IMapSelectable selectable)
     {
+        if (selectable.TeamKey != _teamKey)
+            return;
+
+        if (_selected != null)
+            _selected.OnDeselect();
+
         _selected = selectable;
         Debug.Log("select called");
     }

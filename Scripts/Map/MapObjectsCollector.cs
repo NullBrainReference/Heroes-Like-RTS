@@ -8,9 +8,37 @@ public class MapObjectsCollector : MonoBehaviour
     [SerializeField]
     private List<TownController> _townControllers;
 
+    public List<TownController> TownControllers => _townControllers;
+    public List<MapGroupController> GroupControllers => _groupControllers;
+
+    private void Awake()
+    {
+        _groupControllers = new List<MapGroupController>();
+        _townControllers = new List<TownController>();
+    }
+
     public void Subscribe(MapGroupController controller)
     {
         _groupControllers.Add(controller);
+    }
+
+    public void Subscribe(TownController controller)
+    {
+        _townControllers.Add(controller);
+    }
+
+    public void RestoreModel(Town town)
+    {
+        var controller = _townControllers.Find(x => x.Town.Id == town.Id);
+
+        if (controller != null)
+        {
+            controller.SetTown(town);
+        }
+        else
+        {
+            Debug.LogError($"TownController for town {town.Name} not found.");
+        }
     }
 
     public List<MapGroup> GetGroups()

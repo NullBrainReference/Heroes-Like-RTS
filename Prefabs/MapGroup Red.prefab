@@ -37,6 +37,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6513470919392399476}
+  - {fileID: 4292399725490127784}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6516030190272112184
@@ -111,48 +112,50 @@ MonoBehaviour:
     - _health: 8
       _maxHealth: 8
       _damage: 3
-      _teamKey: B
+      _teamKey: 0
       _unitType: 0
     - _health: 8
       _maxHealth: 8
       _damage: 3
-      _teamKey: B
+      _teamKey: 0
       _unitType: 0
     - _health: 8
       _maxHealth: 8
       _damage: 3
-      _teamKey: B
+      _teamKey: 0
       _unitType: 0
     - _health: 8
       _maxHealth: 8
       _damage: 3
-      _teamKey: B
+      _teamKey: 0
       _unitType: 0
     - _health: 8
       _maxHealth: 8
       _damage: 3
-      _teamKey: B
+      _teamKey: 0
       _unitType: 0
     - _health: 8
       _maxHealth: 8
       _damage: 3
-      _teamKey: B
+      _teamKey: 0
       _unitType: 0
     - _health: 8
       _maxHealth: 8
       _damage: 3
-      _teamKey: B
+      _teamKey: 0
       _unitType: 0
     - _health: 8
       _maxHealth: 8
       _damage: 3
-      _teamKey: B
+      _teamKey: 0
       _unitType: 0
-    _temKey: 
+    _temKey: 0
     _key: B
     _posX: 0
     _posY: 0
   _unitNavigator: {fileID: 395321893314728859}
+  _spriteRenderer: {fileID: 6516030190272112184}
+  _selectionCircle: {fileID: 1305392745384986733}
 --- !u!114 &395321893314728859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,6 +266,93 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db985a8af5c2ae04da1f02d630d4f8ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1305392745384986733
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4292399725490127784}
+  - component: {fileID: 1751437894896922680}
+  m_Layer: 0
+  m_Name: SelectCircle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &4292399725490127784
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1305392745384986733}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.2, z: 0}
+  m_LocalScale: {x: 0.74000007, y: 0.37, z: 0.74000007}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 401799655688748598}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1751437894896922680
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1305392745384986733}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Color: {r: 0.9523809, g: 1, b: 0, a: 0.42745098}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &1477934986756792021
 GameObject:
   m_ObjectHideFlags: 0
