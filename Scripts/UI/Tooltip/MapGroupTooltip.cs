@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-using static UnityEditor.PlayerSettings;
 
 public class MapGroupTooltip : MonoBehaviour
 {

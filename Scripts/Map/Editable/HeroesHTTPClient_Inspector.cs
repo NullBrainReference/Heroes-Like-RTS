@@ -1,5 +1,7 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
+
 
 [CustomEditor(typeof(HeroesHTTPClient))]
 public class HeroesHTTPClient_Inspector : Editor
@@ -28,3 +30,5 @@ public class HeroesHTTPClient_Inspector : Editor
         }
     }
 }
+
+#endif

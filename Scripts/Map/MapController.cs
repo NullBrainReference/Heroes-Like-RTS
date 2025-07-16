@@ -2,7 +2,6 @@ using UnityEngine;
 using Zenject;
 using System.Collections.Generic;
 using System.Collections;
-using System.Drawing;
 
 public class MapController : MonoBehaviour
 {

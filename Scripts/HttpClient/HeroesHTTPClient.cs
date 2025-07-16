@@ -1,10 +1,8 @@
 using System.Collections;
 using System.Text;
-using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.Networking;
 using Zenject;
-using static System.Net.WebRequestMethods;
 using TMPro;
 
 public class HeroesHTTPClient : MonoBehaviour
